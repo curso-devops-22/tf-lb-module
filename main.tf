@@ -17,15 +17,15 @@ resource "azurerm_lb" "lab-loadbalancer" {
 }
 
 resource "azurerm_lb_backend_address_pool" "backend_pool" {
-  loadbalancer_id     = azurerm_lb.lab-loadbalancer.id
-  name                = var.lb-backend-name
+  loadbalancer_id = azurerm_lb.lab-loadbalancer.id
+  name            = var.lb-backend-name
 }
 
 resource "azurerm_lb_backend_address_pool_address" "example" {
   count                   = length(var.lb-backend-address-name)
   name                    = [var.lb-backend-address-name][count.index]
   backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id
-  virtual_network_id      = [var.vnet_id[count.index]]
+  virtual_network_id      = var.vnet-id
   ip_address              = [var.vm-ip]
 }
 
