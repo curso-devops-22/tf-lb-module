@@ -17,46 +17,65 @@ resource "azurerm_lb" "lab-loadbalancer" {
 }
 
 resource "azurerm_lb_backend_address_pool" "backend_pool" {
-    resource_group_name = var.rg_name
-    loadbalancer_id = azurerm_lb.lab-loadbalancer.id
-    name = var.lb-backend-name
+  resource_group_name = var.rg_name
+  loadbalancer_id     = azurerm_lb.lab-loadbalancer.id
+  name                = var.lb-backend-name
 }
 
-# NAT RULE 
-resource "azurerm_lb_nat_rule" "tcp" {
-    resource_group_name = var.rg_name
-    loadbalancer_id = azurerm_lb.lab-loadbalancer.id
-    name = "tcp-rule"
-    protocol = "tcp"
-    frontend_port = "5000"
-    backend_port  = "3389"
-    frontend_ip_configuration_name = "lbfrontendip" 
-    count = 2  
+resource "azurerm_lb_backend_address_pool_address" "example" {
+  lb-backend-address-count = length(var-lb-backend-address-name)
+  name                     = "example"
+  backend_address_pool_id  = azurerm_lb_backend_address_pool.backend_pool.id
+  virtual_network_id       = [var.vnet_id]
+  ip_address               = [var.vm-ip]
 }
 
-# LB RULE 
-resource "azurerm_lb_rule" "lb_rule" {
-    resource_group_name = var.rg_name
-    loadbalancer_id = azurerm_lb.lab-loadbalancer.id
-    name = "LBRule"
-    protocol = "tcp"
-    frontend_port = "80"
-    backend_port  = "80"
-    frontend_ip_configuration_name = "lbfrontendip"  
-    enable_floating_ip = false
-    backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id  
-    idle_timeout_in_minutes = 5 
-    probe_id = azurerm_lb_probe.lb_probe.id # not created yet 
-    depends_on = ["azurerm_lb_probe.lb_probe"]
+
+resource "azurerm_subnet" "lab-subnet" {
+  count                = length(var.subnet-name)
+  name                 = var.subnet-name[count.index]
+  resource_group_name  = var.rg-name
+  virtual_network_name = azurerm_virtual_network.lab-vnet.name
+  address_prefixes     = [var.subnet-prefixes[count.index]]
 }
 
-# LB PROBE
-resource "azurerm_lb_probe" "lb_probe" {
-    resource_group_name = var.rg_name
-    loadbalancer_id = azurerm_lb.lab-loadbalancer.id
-    name = "lbprobe"
-    protocol = "tcp"
-    port = 80
-    interval_in_seconds = 5 
-    number_of_probes = 2 
-}
+
+
+# # NAT RULE 
+# resource "azurerm_lb_nat_rule" "tcp" {
+#     resource_group_name = var.rg_name
+#     loadbalancer_id = azurerm_lb.lab-loadbalancer.id
+#     name = "tcp-rule"
+#     protocol = "tcp"
+#     frontend_port = "5000"
+#     backend_port  = "3389"
+#     frontend_ip_configuration_name = "lbfrontendip" 
+#     count = 2  
+# }
+
+# # LB RULE 
+# resource "azurerm_lb_rule" "lb_rule" {
+#     resource_group_name = var.rg_name
+#     loadbalancer_id = azurerm_lb.lab-loadbalancer.id
+#     name = "LBRule"
+#     protocol = "tcp"
+#     frontend_port = "80"
+#     backend_port  = "80"
+#     frontend_ip_configuration_name = "lbfrontendip"  
+#     enable_floating_ip = false
+#     backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id  
+#     idle_timeout_in_minutes = 5 
+#     probe_id = azurerm_lb_probe.lb_probe.id # not created yet 
+#     depends_on = ["azurerm_lb_probe.lb_probe"]
+# }
+
+# # LB PROBE
+# resource "azurerm_lb_probe" "lb_probe" {
+#     resource_group_name = var.rg_name
+#     loadbalancer_id = azurerm_lb.lab-loadbalancer.id
+#     name = "lbprobe"
+#     protocol = "tcp"
+#     port = 80
+#     interval_in_seconds = 5 
+#     number_of_probes = 2 
+# }

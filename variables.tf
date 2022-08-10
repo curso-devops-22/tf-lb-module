@@ -26,6 +26,19 @@ variable "frontip-name" {
 }
 
 variable "lb-backend-name" {
-  type = string
+  type    = string
   default = "backendpool1"
+}
+
+variable "var-lb-backend-address-name" {
+  type    = list(string)
+  default = ["lb-backend-address-name1"]
+}
+
+variable "vnet_id" {
+  type = list(string)
+}
+
+variable "vm-ip" {
+  type = list(string)
 }
