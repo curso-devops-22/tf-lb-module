@@ -24,3 +24,8 @@ variable "frontip-name" {
   type    = string
   default = "PublicIPAddress"
 }
+
+variable "lb-backend-name" {
+  type = string
+  default = "backendpool1"
+}
