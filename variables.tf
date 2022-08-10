@@ -35,7 +35,7 @@ variable "lb-backend-address-name" {
   default = ["lb-backend-address-name1"]
 }
 
-variable "vnet_id" {
+variable "vnet-id" {
   type = string
 }
 
