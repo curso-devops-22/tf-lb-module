@@ -17,7 +17,6 @@ resource "azurerm_lb" "lab-loadbalancer" {
 }
 
 resource "azurerm_lb_backend_address_pool" "backend_pool" {
-  resource_group_name = var.rg_name
   loadbalancer_id     = azurerm_lb.lab-loadbalancer.id
   name                = var.lb-backend-name
 }
