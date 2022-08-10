@@ -31,15 +31,6 @@ resource "azurerm_lb_backend_address_pool_address" "example" {
 }
 
 
-resource "azurerm_subnet" "lab-subnet" {
-  count                = length(var.subnet-name)
-  name                 = var.subnet-name[count.index]
-  resource_group_name  = var.rg-name
-  virtual_network_name = azurerm_virtual_network.lab-vnet.name
-  address_prefixes     = [var.subnet-prefixes[count.index]]
-}
-
-
 
 # # NAT RULE 
 # resource "azurerm_lb_nat_rule" "tcp" {
