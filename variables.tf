@@ -36,9 +36,8 @@ variable "lb-backend-address-name" {
 }
 
 variable "vnet_id" {
-  type = list(string)
 }
 
 variable "vm-ip" {
-  type = list(string)
+
 }
