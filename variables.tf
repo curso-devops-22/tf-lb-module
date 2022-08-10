@@ -30,7 +30,7 @@ variable "lb-backend-name" {
   default = "backendpool1"
 }
 
-variable "var-lb-backend-address-name" {
+variable "lb-backend-address-name" {
   type    = list(string)
   default = ["lb-backend-address-name1"]
 }

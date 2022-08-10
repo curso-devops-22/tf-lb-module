@@ -23,12 +23,13 @@ resource "azurerm_lb_backend_address_pool" "backend_pool" {
 }
 
 resource "azurerm_lb_backend_address_pool_address" "example" {
-  lb-backend-address-count = length(var-lb-backend-address-name)
-  name                     = "example"
-  backend_address_pool_id  = azurerm_lb_backend_address_pool.backend_pool.id
-  virtual_network_id       = [var.vnet_id]
-  ip_address               = [var.vm-ip]
+  count                   = length(var.lb-backend-address-name)
+  name                    = [var.lb-backend-address-name][count.index]
+  backend_address_pool_id = azurerm_lb_backend_address_pool.backend_pool.id
+  virtual_network_id      = [var.vnet_id[lb-backend-address-count.index]]
+  ip_address              = [var.vm-ip[count.index]]
 }
+
 
 
 
