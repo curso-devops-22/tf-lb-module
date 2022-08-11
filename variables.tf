@@ -40,6 +40,6 @@ variable "vnet-id" {
 }
 
 variable "vm-ip" {
-  type = list(number)
+  type = list(string)
 
 }
