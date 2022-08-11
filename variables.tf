@@ -31,8 +31,7 @@ variable "lb-backend-name" {
 }
 
 variable "lb-backend-address-name" {
-  type    = list(string)
-  default = ["lb-backend-address-name1"]
+  type    = string
 }
 
 variable "vnet-id" {
@@ -40,5 +39,5 @@ variable "vnet-id" {
 }
 
 variable "vm-ip" {
-  type = list(string)
+  type = string
 }
